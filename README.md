@@ -1,0 +1,2 @@
+## Aplicativo de Monitoramento Hortifruti
+Repositório rascunho para o projeto Monitoramento de Gôndolas utilizando Inteligência Artificial, apresentado na Universidade Paulista como Trabalho de Conclusão de Curso em 2024.
