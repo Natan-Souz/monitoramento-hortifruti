@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, setForm, SafeAreaView} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, setForm, SafeAreaView, Image} from 'react-native';
 
 import Title from '../title';
 
@@ -12,7 +12,14 @@ export default function Login() {
     <View style={{ justifyContent: 'center'}}>
       <View style={styles.container}>
           <View style={styles.header}>
-              <Title/>      
+            <Image
+              alt="App Logo"
+              resizeMode="contain"
+              style={styles.headerImg}
+              source={require('../img/fruits-apple.jpg')} />
+            <View style={styles.title}>
+              <Text>Monitoramento de Gôndolas</Text>
+            </View>     
           </View>
           <View style={styles.form}>
               <View style={styles.input}>
@@ -60,18 +67,19 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     flexShrink: 1,
     flexBasis: 0,
-    alignSelf: 'stretch'
+    width: 400,
   },
   header: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 36,
+    marginVertical: 40,
   },
   headerImg: {
     width: 80,
     height: 80,
     alignSelf: 'center',
     marginBottom: 36,
+    borderRadius: 20,
   },
 
   form: {
@@ -139,5 +147,11 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     fontWeight: '600',
     color: '#fff',
+  },
+  title: {
+    fontSize: 31,
+    fontWeight: '700',
+    color: '#1D2A32',
+    marginBottom: 6,
   },
 });

@@ -12,8 +12,9 @@ const styles = StyleSheet.create({
       backgroundColor: '#5cc163',
       alignItems: 'center',
       justifyContent: 'center',
-      fontSize: 40,
-      fontWeight: '700',
+      fontSize: 50,
+      fontStyle: 'italic',
+      fontWeight: '900',
       marginBottom: 6,
     },
 });
