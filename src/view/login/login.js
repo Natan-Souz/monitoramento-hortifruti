@@ -1,60 +1,83 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, setForm, SafeAreaView, Image} from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, TextInput, Button, Image } from 'react-native';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import { useNavigation } from '@react-navigation/native';
 
-import Title from '../title';
+const validationSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('E-mail inválido')
+    .required('Campo obrigatório')
+    .test('email-match', 'E-mail incorreto', (value) => value === 'email@email.com'),
+  password: Yup.string()
+    .required('Campo obrigatório')
+    .test('password-match', 'Senha incorreta', (value) => value === '123456'),
+});
 
 export default function Login() {
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  });
+  const navigation = useNavigation();
+
+  const handleLogin = (values) => {
+    if (values.email === 'email@email.com' && values.password === '123456') {
+      navigation.navigate('Home');
+    } else {
+      console.log('Credenciais incorretas. Tente novamente.');
+    }
+  };
+
   return (
-    <View style={{ justifyContent: 'center'}}>
-      <View style={styles.container}>
-          <View style={styles.header}>
-            <Image
-              alt="App Logo"
-              resizeMode="contain"
-              style={styles.headerImg}
-              source={require('../img/fruits-apple.jpg')} />
-            <View style={styles.title}>
-              <Text>Monitoramento de Gôndolas</Text>
-            </View>     
-          </View>
-          <View style={styles.form}>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Image
+          alt="App Logo"
+          resizeMode="contain"
+          style={styles.headerImg}
+          source={require('../img/fruits-apple.jpg')}
+        />
+        <Text style={styles.title}>Monitoramento de Gôndolas</Text>
+      </View>
+      <View style={styles.form}>
+        <Formik
+          initialValues={{ email: '', password: '' }}
+          validationSchema={validationSchema}
+          onSubmit={handleLogin}
+        >
+          {({ handleChange, handleSubmit, values, errors }) => (
+            <>
               <View style={styles.input}>
-                <Text style={styles.inputLabel}>E-mail</Text>
                 <TextInput
                   autoCapitalize="none"
                   autoCorrect={false}
                   clearButtonMode="while-editing"
                   keyboardType="email-address"
-                  onChangeText={email => setForm({ ...form, email })}
-                  placeholder="joao@email.com"
+                  onChangeText={handleChange('email')}
+                  placeholder="E-mail"
                   placeholderTextColor="#6b7280"
                   style={styles.inputControl}
-                  value={form.email} />
+                  value={values.email}
+                />
+                {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
               </View>
               <View style={styles.input}>
-                <Text style={styles.inputLabel}>Senha</Text>
                 <TextInput
                   autoCorrect={false}
                   clearButtonMode="while-editing"
-                  onChangeText={password => setForm({ ...form, password })}
-                  placeholder="********"
+                  onChangeText={handleChange('password')}
+                  placeholder="Senha"
                   placeholderTextColor="#6b7280"
                   style={styles.inputControl}
-                  secureTextEntry={true}
-                  value={form.password} />
+                  secureTextEntry
+                  value={values.password}
+                />
+                {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
               </View>
               <View style={styles.formAction}>
-                  <View style={styles.btn}>
-                    <Text style={styles.btnText}>Login</Text>
-                  </View>
+                <Button title="Login" onPress={handleSubmit} color="#007838" />
               </View>
               <Text style={styles.formLink}>Esqueci minha senha</Text>
-          </View>
-        
+            </>
+          )}
+        </Formik>
       </View>
     </View>
   );
@@ -62,96 +85,56 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 24,
-    paddingHorizontal: 0,
-    flexGrow: 1,
-    flexShrink: 1,
-    flexBasis: 0,
-    width: 400,
+    flex: 1,
+    backgroundColor: '#5cc163',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
   header: {
     alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 40,
+    marginBottom: 40,
   },
   headerImg: {
-    width: 80,
-    height: 80,
-    alignSelf: 'center',
-    marginBottom: 36,
-    borderRadius: 20,
-  },
-
-  form: {
-    marginBottom: 24,
-    paddingHorizontal: 24,
-    flexGrow: 1,
-    flexShrink: 1,
-    flexBasis: 0,
-  },
-
-  formAction: {
-    marginTop: 4,
+    width: 60,
+    height: 60,
     marginBottom: 16,
   },
-
+  title: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#1D2A32',
+  },
+  form: {
+    width: '90%',
+    alignItems: 'center',
+  },
+  input: {
+    width: '100%',
+    marginBottom: 12,
+  },
+  inputControl: {
+    height: 40,
+    backgroundColor: '#fff',
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    fontSize: 15,
+    borderWidth: 1,
+    borderColor: '#C9D3DB',
+  },
+  formAction: {
+    width: '100%',
+    marginTop: 20,
+  },
   formLink: {
-    fontSize: 16,
+    marginTop: 20,
+    fontSize: 14,
     fontWeight: '600',
     color: '#007838',
     textAlign: 'center',
   },
-  formFooter: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#222',
-    textAlign: 'center',
-    letterSpacing: 0.15,
-  },
-  /** Input */
-  input: {
-    marginBottom: 16,
-  },
-  inputLabel: {
-    fontSize: 17,
-    fontWeight: '600',
-    color: '#222',
-    marginBottom: 8,
-  },
-  inputControl: {
-    height: 50,
-    backgroundColor: '#fff',
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    fontSize: 15,
-    fontWeight: '500',
-    color: '#222',
-    borderWidth: 1,
-    borderColor: '#C9D3DB',
-    borderStyle: 'solid',
-  },
-  /** Button */
-  btn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 30,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderWidth: 1,
-    backgroundColor: '#007838',
-    borderColor: '#007838',
-  },
-  btnText: {
-    fontSize: 18,
-    lineHeight: 26,
-    fontWeight: '600',
-    color: '#fff',
-  },
-  title: {
-    fontSize: 31,
-    fontWeight: '700',
-    color: '#1D2A32',
-    marginBottom: 6,
+  errorText: {
+    color: 'red',
+    marginTop: 5,
   },
 });
