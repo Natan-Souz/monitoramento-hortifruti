@@ -17,13 +17,15 @@ const validationSchema = Yup.object().shape({
 export default function Login() {
   const navigation = useNavigation();
 
-  const handleLogin = (values) => {
-    if (values.email === 'email@email.com' && values.password === '123456') {
-      navigation.navigate('Home');
-    } else {
-      console.log('Credenciais incorretas. Tente novamente.');
-    }
-  };
+  const handleLogin = (values) => console.log(values);
+
+  // const handleLogin = (values) => {
+  //   if (values.email === 'email@email.com' && values.password === '123456') {
+  //     navigation.navigate('./home.js');
+  //   } else {
+  //     console.log('Credenciais incorretas. Tente novamente.');
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
@@ -72,7 +74,7 @@ export default function Login() {
                 {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
               </View>
               <View style={styles.formAction}>
-                <Button title="Login" onPress={handleSubmit} color="#007838" />
+                <Button title="Login" onPress={handleSubmit} style={styles.button} color="#007838"/>
               </View>
               <Text style={styles.formLink}>Esqueci minha senha</Text>
             </>
@@ -136,5 +138,6 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginTop: 5,
+    fontWeight: '700',
   },
 });
